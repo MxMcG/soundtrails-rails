@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  center_lat: 1.5
+  center_lng: 1.5
+  artist: MyString
+
+two:
+  user_id: 1
+  center_lat: 1.5
+  center_lng: 1.5
+  artist: MyString

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SoundtrailsRails</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <% if session[:user_id] %>
+    <%= link_to "Logout", logout_path %>
+
+  <% else %>
+    <%= link_to "Login", login_path %>
+    <%= link_to "Signup", signup_path %>
+  <% end %>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

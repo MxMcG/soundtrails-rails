@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lat: 1.5
+  lng: 1.5
+  date: 2015-10-21
+  time: 2015-10-21 08:05:29
+  ticket_link: MyString
+  artist_name: MyString
+  event_title: MyString
+  map_id: 1
+
+two:
+  lat: 1.5
+  lng: 1.5
+  date: 2015-10-21
+  time: 2015-10-21 08:05:29
+  ticket_link: MyString
+  artist_name: MyString
+  event_title: MyString
+  map_id: 1
