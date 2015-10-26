@@ -1,17 +1,12 @@
 Rails.application.routes.draw do
 
-  get '/signup' => 'users#new'
-  post '/users' => 'users#create'
+  devise_for :users
 
-  get '/login' => 'sessions#new'
-  post '/login' => 'sessions#create'
-  get '/logout' => 'sessions#destroy'
+  get '/' => 'welcome#index'
 
-
-  root 'welcome#index'
-
-  resources :users
-  resources :maps
+  resources :users do
+    resources :maps
+  end
 
 
   # The priority is based upon order of creation: first created -> highest priority.

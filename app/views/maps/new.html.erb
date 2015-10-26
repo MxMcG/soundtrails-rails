@@ -1,3 +1,9 @@
-<%= form_for @map, url: {action: "create"}, html: {class: "create-map-form"} do |f| %>
-  <%= f.text_field :artist %>
-<% end %>
+<div class="new_map_wrapper">
+  <h2>Generate a tour map for your artist</h2>
+  <%= link_to "all maps", user_maps_path %>
+  <%= form_for @map, url: user_maps_path, html: {class: "create-map-form"}, method: 'post' do |f| %>
+    <%= f.text_field :artist, placeholder: "enter an artist" %>
+    <%= f.submit %>
+  <% end %>
+  <p></p>
+</div>
