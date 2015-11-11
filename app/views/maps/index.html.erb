@@ -1,5 +1,6 @@
 <h2><%= @user.email %>'s maps</h2>
-<%= button_to "Create a Map", new_user_map_path(@user.id), method: 'get' %>
+<%= button_to "Create a Map", new_user_map_path(@user.id), method: 'get', remote: true, class: "create_map_button" %>
+<div id="map_form"></div>
 <% @maps.each do |map| %>
   <%= link_to map.artist, user_map_path(@user, map.id) %><br>
 <% end %>

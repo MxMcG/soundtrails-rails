@@ -1,0 +1,4 @@
+<%= form_for @map, url: user_maps_path, html: {class: "create-map-form"}, method: 'post' do |f| %>
+    <%= f.text_field :artist, placeholder: "enter an artist" %>
+    <%= f.submit %>
+<% end %>

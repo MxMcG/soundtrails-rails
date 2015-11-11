@@ -1,8 +1,23 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 
-$(document).on('page:load', function() {
+$(document).on('ready', function() {
 
+  $('.button_to').on("submit", function(e){
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('action'),
+      method: 'get',
+    }).done(function(data){
+      $('.button_to').hide();
+      $('#map_form').prepend(data);
+    })
+  })
+
+  $('#map_form').on("submit", "#new_map", function(e){
+    e.preventDefault();
+    console.log("HI")
+  });
 
 // login & registration buttons
 
@@ -103,17 +118,15 @@ $(document).on('page:load', function() {
 
 
   // determining center of map
-  $('.create_map_form').on("submit", "form" ,function(e){
+  $('.create_map_form').on("submit", "form" , function(e){
       e.preventDefault();
-
-      $(".new_map_wrapper").prepend("<p>creating map...</p>");
-      $("#new_map").hide();
 
     navigator.geolocation.getCurrentPosition(function(geo){
       var location = {
         lat: geo.coords.latitude,
         lng: geo.coords.longitude
       }
+      console.log(location)
 
     var path = $(this).attr('action');
     var mapTitle = $("#map_artist").val();

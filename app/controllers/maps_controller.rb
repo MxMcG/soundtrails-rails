@@ -7,16 +7,23 @@ class MapsController < ApplicationController
 
   def new
     @map = Map.new()
-
+    respond_to do |format|
+      format.html {render :"_new_map", layout: false}
+      format.json {render json: @map}
+    end
   end
 
   def create
     @map = Map.new(map_params)
     @map.user_id = current_user.id
+    p "&" * 100
+    p @map
+    p "&" * 100
+
     if @map.save
-      redirect_to user_maps_path
+      redirect_to user_map_path({user_id: current_user.id, id: @map.id})
     else
-      render :new
+      redirect_to user_maps_path
     end
   end
 
