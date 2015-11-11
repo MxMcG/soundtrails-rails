@@ -16,7 +16,32 @@ $(document).on('ready', function() {
 
   $('#map_form').on("submit", "#new_map", function(e){
     e.preventDefault();
-    console.log("HI")
+    navigator.geolocation.getCurrentPosition(function(geo){
+      var location = {
+        lat: geo.coords.latitude,
+        lng: geo.coords.longitude
+      }
+    console.log(location)
+
+      var path = $(this).attr('action');
+      var mapTitle = $("#map_artist").val();
+      var mapCenterLat = location.lat
+      var mapCenterLong = location.lng
+
+    console.log(mapTitle)
+      // send user location and artist name to route to create new map, new markers
+      $.ajax({
+        url: path,
+        method: "post",
+        data: {map_lat: mapCenterLat, map_lng: mapCenterLong, map_title: mapTitle},
+        dataType: "html"
+      }).done(function(data){
+      // add new band link to profile page
+
+      })
+
+    }) //end getposition
+
   });
 
 // login & registration buttons
@@ -116,38 +141,6 @@ $(document).on('ready', function() {
     })
 
 
-
-  // determining center of map
-  $('.create_map_form').on("submit", "form" , function(e){
-      e.preventDefault();
-
-    navigator.geolocation.getCurrentPosition(function(geo){
-      var location = {
-        lat: geo.coords.latitude,
-        lng: geo.coords.longitude
-      }
-      console.log(location)
-
-    var path = $(this).attr('action');
-    var mapTitle = $("#map_artist").val();
-    var mapCenterLat = location.lat
-    var mapCenterLong = location.lng
-
-    // send user location and artist name to route to create new map, new markers
-    $.ajax({
-      url: path,
-      method: "post",
-      data: {map_lat: mapCenterLat, map_lng: mapCenterLong, map_title: mapTitle},
-      dataType: "html"
-    }).done(function(data){
-    // add new band link to profile page
-      $('.new_map_wrapper').prepend(data);
-    })
-
-      $('.new_map_wrapper p').html("map created. thank you!")
-
-    }) //end getposition
-
-  }) //end get coordinates and artist
+ //end get coordinates and artist
 
 });
