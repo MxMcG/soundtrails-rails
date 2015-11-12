@@ -33,7 +33,7 @@ $(document).on('ready', function() {
       $.ajax({
         url: path,
         method: "post",
-        data: {map_lat: mapCenterLat, map_lng: mapCenterLong, map_title: mapTitle},
+        data: {center_lat: mapCenterLat, center_lng: mapCenterLong, artist: mapTitle},
         dataType: "html"
       }).done(function(data){
       // add new band link to profile page
