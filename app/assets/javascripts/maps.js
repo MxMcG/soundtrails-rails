@@ -21,20 +21,21 @@ $(document).on('ready', function() {
         lat: geo.coords.latitude,
         lng: geo.coords.longitude
       }
-    console.log(location)
 
       var path = $(this).attr('action');
       var mapTitle = $("#map_artist").val();
       var mapCenterLat = location.lat
       var mapCenterLong = location.lng
 
+    console.log(mapCenterLat)
+    console.log(mapCenterLong)
     console.log(mapTitle)
       // send user location and artist name to route to create new map, new markers
       $.ajax({
         url: path,
         method: "post",
-        data: {center_lat: mapCenterLat, center_lng: mapCenterLong, artist: mapTitle},
-        dataType: "html"
+        data: {map: {center_lat: mapCenterLat, center_lng: mapCenterLong, artist: mapTitle}},
+        dataType: "json"
       }).done(function(data){
       // add new band link to profile page
 

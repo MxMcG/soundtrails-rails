@@ -18,10 +18,9 @@ class MapsController < ApplicationController
     p params
     p "&" * 100
     @map = Map.new(map_params)
+    @map.user_id = current_user.id
     if @map.save
       redirect_to user_map_path({user_id: current_user.id, id: @map.id})
-    else
-      redirect_to user_maps_path
     end
   end
 
@@ -44,7 +43,7 @@ class MapsController < ApplicationController
   private
 
   def map_params
-    params.permit(:center_lat, :center_lng, :artist, :user_id)
+    params.require(:map).permit(:center_lat, :center_lng, :artist, :user_id)
   end
 
 end
