@@ -2,7 +2,7 @@ class MapsController < ApplicationController
 
   def index
     @user = current_user
-    @maps = @user.maps
+    @maps = @user.maps.order("id DESC")
   end
 
   def new
@@ -14,18 +14,28 @@ class MapsController < ApplicationController
   end
 
   def create
-    p "&" * 100
-    p params
-    p "&" * 100
     @map = Map.new(map_params)
     @map.user_id = current_user.id
-    if @map.save
-      redirect_to user_map_path({user_id: current_user.id, id: @map.id})
+    respond_to do |format|
+      if @map.save
+        format.html { render partial: "new_map_link", locals: {map: @map, user: @map.user_id} }
+      end
     end
   end
 
   def show
     @map = Map.find(params[:id])
+    @locations = Songkick::Calendar.new(artist_name: "Tribal Seeds").tour_locations
+
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: {
+          center_lat: @map.center_lat,
+          center_lng: @map.center_lng,
+          locations: @locations
+        }}
+    end
   end
 
   def edit
@@ -37,7 +47,9 @@ class MapsController < ApplicationController
   end
 
   def destroy
-
+    @map = Map.find(params[:id])
+    @map.destroy
+    redirect_to user_maps_path(current_user)
   end
 
   private
