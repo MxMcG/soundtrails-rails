@@ -1,4 +1,75 @@
 <%= link_to "all maps", user_maps_path %>
 <h3>Artist: <%= @map.artist %></h3>
+<input name="map_id" type="hidden" value='<%= @map.id %>'/>
+<input name="user_id" type="hidden" value='<%= @map.user.id %>'/>
 <div class="view-map-link"></div>
 <div id="map"></div>
+
+<script>
+  var this_user_id = ($('input[name=user_id]').val());
+  var this_map_id = ($('input[name=map_id]').val());
+  var roadMap = google.maps.MapTypeId.ROADMAP;
+  var satelliteMap = google.maps.MapTypeId.SATELLITE;
+  var hybridMap = google.maps.MapTypeId.HYBRID;
+  var terrainMap = google.maps.MapTypeId.TERRAIN;
+  var path = $(".view-map-link").attr("href");
+
+  $.ajax({
+    url: "/users/" + this_user_id + "/maps/" + this_map_id,
+    method: 'get',
+    dataType: 'json'
+  }).done(function(data){
+    var artistTitle = data.artist,
+        mapCenter = {lat: data.center_lat, lng: data.center_lng},
+        locations = data.locations,
+        eventTitles = data.titles,
+        dates = data.dates,
+        times = data.times,
+        links = data.links,
+        cities = data.cities
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: mapCenter,
+      zoom: 5,
+      mapTypeId: roadMap
+    });
+
+    var markers = [];
+    for (var i = 0; i < locations.length; i++) {
+      var marker = locations[i],
+          lat = marker[0],
+          lng = marker[1],
+          title = eventTitles[i],
+          date = dates[i],
+          time = times[i],
+          link = links[i],
+          city = cities[i]
+
+
+      var locationMarker = new google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: map,
+        title: artistTitle,
+        content: title + '<br>' + city + "<br>" + date + '<br>' + time + "<br><a href='" + link + "'>Get Tickets</a>"
+      });
+
+      var infowindow = null;
+        infowindow = new google.maps.InfoWindow({
+        content: "loading..."
+        })
+
+      markers.push(locationMarker);
+    };
+    for (var i = 0; i < markers.length; i++) {
+      // add click listeners to all markers
+      var marker = markers[i]
+
+      google.maps.event.addListener(marker, 'click', function() {
+        console.log("captured")
+        infowindow.setContent(this.content);
+        infowindow.open(map, this);
+      });
+    };
+
+  });
+</script>

@@ -3,7 +3,7 @@
 <div id="map_form"></div>
 <div class="maps-list">
   <% @maps.each do |map| %>
-    <%= link_to map.artist, user_map_path(@user, map.id) %>
+    <%= link_to map.artist, user_map_path(@user, map.id), class: "view-map-link" %>
     <%= link_to "Delete", user_map_path(@user, map.id), method: "delete" %>
     <br>
   <% end %>
