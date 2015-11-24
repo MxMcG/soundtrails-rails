@@ -9,20 +9,22 @@ class MapsController < ApplicationController
     @map = Map.new()
     respond_to do |format|
       format.html {render :"_new_map", layout: false}
-      format.json {render json: @map}
+      format.json
     end
   end
 
   def create
     @map = Map.new(map_params)
+    p @map
     @map.user_id = current_user.id
 
     respond_to do |format|
       if @map.save
-        p "&" * 70
-        p @map
-        p "&" * 70
-        format.html { render partial: "new_map_link", locals: {map: @map, user: @map.user_id} }
+        # redirect_to user_map_path(map: @map, id: @map.id)
+        # p "&" * 70
+        # p @map
+        # p "&" * 70
+        format.html { render "show", layout: false, locals: {map: @map, user: @map.user_id} }
       end
     end
   end
@@ -39,7 +41,7 @@ class MapsController < ApplicationController
     @times = @event.event_times
     @links = @event.event_links
     @cities = @event.cities
-
+    p @map.center_lat
     respond_to do |format|
       format.json {
         render json: {

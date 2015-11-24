@@ -1,5 +1,6 @@
 $(document).ready( function() {
 
+  // Display new map form
   $('.button_to').on("submit", function(e){
     e.preventDefault();
     $.ajax({
@@ -11,6 +12,7 @@ $(document).ready( function() {
     })
   })
 
+  // Create a new map
   $('#map_form').on("submit", "#new_map", function(e){
     e.preventDefault();
 
@@ -33,14 +35,15 @@ $(document).ready( function() {
         data: {map: {center_lat: mapCenterLat, center_lng: mapCenterLong, artist: mapTitle}},
         dataType: "html"
       }).done(function(data){
-      // add new band link to profile page
-      $(".maps-list").prepend(data)
+      // Upon creation of map, display on profile page
+        $(".map-view").prepend(data)
       })
-    }) //end get position
+    })
   });
 
-// Google maps API
+  $('')
 
-  // types of mapTypeId
+  $('')
+
 
 });
