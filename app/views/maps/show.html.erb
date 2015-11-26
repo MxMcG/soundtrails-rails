@@ -19,7 +19,7 @@
     method: 'get',
     dataType: 'json'
   }).done(function(data){
-    console.log(data)
+    // console.log(data)
     var artistTitle = data.artist,
         mapCenter = {lat: data.center_lat, lng: data.center_lng},
         locations = data.locations,
@@ -29,48 +29,91 @@
         links = data.links,
         cities = data.cities
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      center: mapCenter,
-      zoom: 5,
-      mapTypeId: terrainMap
-    });
+    function initMap () {
 
-    var markers = [];
-    for (var i = 0; i < locations.length; i++) {
-      var marker = locations[i],
-          lat = marker[0],
-          lng = marker[1],
-          title = eventTitles[i],
-          date = dates[i],
-          time = times[i],
-          link = links[i],
-          city = cities[i]
-
-
-      var locationMarker = new google.maps.Marker({
-        position: {lat: lat, lng: lng},
-        map: map,
-        title: artistTitle,
-        content: title + '<br>' + city + "<br>" + date + '<br>' + time + "<br><a href='" + link + "'>Get Tickets</a>"
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: mapCenter,
+        zoom: 5,
+        mapTypeId: terrainMap
       });
 
-      var infowindow = null;
-        infowindow = new google.maps.InfoWindow({
-        content: "loading..."
-        })
+      var markers = [];
+      var tourLocations = [];
+      var nextTourLocation = {lat: locations[0][0], lng: locations[0][1]};
+      var secondNextTourLocation = {lat: locations[1][0], lng: locations[1][1]};
 
-      markers.push(locationMarker);
-    };
-    for (var i = 0; i < markers.length; i++) {
-      // add click listeners to all markers
-      var marker = markers[i]
+      for (var i = 0; i < locations.length; i++) {
+        var marker = locations[i],
+            lat = marker[0],
+            lng = marker[1],
+            title = eventTitles[i],
+            date = dates[i],
+            time = times[i],
+            link = links[i],
+            city = cities[i]
 
-      google.maps.event.addListener(marker, 'click', function() {
-        console.log("captured")
-        infowindow.setContent(this.content);
-        infowindow.open(map, this);
+        // current date formatting
+        var today = new Date(),
+            currentDay = today.getDate(),
+            currentMonth = today.getMonth(),
+            currentYear = today.getFullYear()
+
+        // tour date formatting
+        var tourDay = date.slice(8, 10),
+            tourMonth = date.slice(5, 7),
+            tourYear = date.slice(0, 4)
+
+        // console.log(tourDay)
+        // console.log(tourMonth)
+        // console.log(tourYear)
+        // console.log(currentDay)
+        // console.log(currentMonth)
+        // console.log(currentYear)
+
+        if ( (nextTourLocation.lat === lat) && (nextTourLocation.lng === lng) ) {
+          var icon = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        } else if ( (secondNextTourLocation.lat === lat) && (secondNextTourLocation.lng === lng) ) {
+          icon = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
+        } else {
+          icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        }
+
+        var locationMarker = new google.maps.Marker({
+          position: {lat: lat, lng: lng},
+          map: map,
+          title: artistTitle,
+          content: title + '<br>' + city + "<br>" + date + '<br>' + time + "<br><a href='" + link + "'>Get Tickets</a>",
+          icon: icon
+        });
+
+        var infowindow = null;
+          infowindow = new google.maps.InfoWindow({
+          content: "loading..."
+          })
+        tourLocations.push({lat: lat, lng: lng})
+        markers.push(locationMarker);
+      };
+
+      for (var i = 0; i < markers.length; i++) {
+        // add click listeners to all markers
+        var marker = markers[i]
+
+        google.maps.event.addListener(marker, 'click', function() {
+          console.log("captured")
+          infowindow.setContent(this.content);
+          infowindow.open(map, this);
+        });
+      };
+
+      var tourLine = new google.maps.Polyline({
+        path: tourLocations,
+        geodesic: true,
+        strokeColor: 'black',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
       });
+      tourLine.setMap(map)
     };
-
+    initMap()
   });
 </script>
