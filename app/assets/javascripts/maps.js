@@ -36,6 +36,7 @@ $(document).ready( function() {
         dataType: "html"
       }).done(function(data){
       // Upon creation of map, display on profile page
+        console.log(data)
         $(".map-view").prepend(data)
       })
     })

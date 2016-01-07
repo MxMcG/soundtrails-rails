@@ -36,53 +36,53 @@ module Songkick
     def event_dates_for(artist_name)
       calendar_data = calendar_for(artist_name)
       # production
-      # JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["start"]["date"]}
+      JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["start"]["date"]}
       # development
-      calendar_data["resultsPage"]["results"]["event"].map {|event| event["start"]["date"]}
+      # calendar_data["resultsPage"]["results"]["event"].map {|event| event["start"]["date"]}
 
     end
 
     def event_times_for(artist_name)
       calendar_data = calendar_for(artist_name)
       # production
-      # JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["start"]["time"]}
+      JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["start"]["time"]}
       # development
-      calendar_data["resultsPage"]["results"]["event"].map {|event| event["start"]["time"]}
+      # calendar_data["resultsPage"]["results"]["event"].map {|event| event["start"]["time"]}
     end
 
     def tour_locations_for(artist_name)
       calendar_data = calendar_for(artist_name)
       # production
-      # lng_array = JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["location"]["lng"]}
-      # lat_array = JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["location"]["lat"]}
+      lng_array = JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["location"]["lng"]}
+      lat_array = JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["location"]["lat"]}
       # development
-      lng_array = calendar_data["resultsPage"]["results"]["event"].map {|event| event["location"]["lng"]}
-      lat_array = calendar_data["resultsPage"]["results"]["event"].map {|event| event["location"]["lat"]}
+      # lng_array = calendar_data["resultsPage"]["results"]["event"].map {|event| event["location"]["lng"]}
+      # lat_array = calendar_data["resultsPage"]["results"]["event"].map {|event| event["location"]["lat"]}
       lat_array.zip(lng_array)
     end
 
     def event_cities_for(artist_name)
       calendar_data = calendar_for(artist_name)
       # production
-      # JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["location"]["city"]}
+      JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["location"]["city"]}
       # development
-      calendar_data["resultsPage"]["results"]["event"].map {|event| event["location"]["city"]}
+      # calendar_data["resultsPage"]["results"]["event"].map {|event| event["location"]["city"]}
     end
 
     def event_titles_for(artist_name)
       calendar_data = calendar_for(artist_name)
       # production
-      # JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["displayName"]}
+      JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["displayName"]}
       # development
-      calendar_data["resultsPage"]["results"]["event"].map {|event| event["displayName"]}
+      # calendar_data["resultsPage"]["results"]["event"].map {|event| event["displayName"]}
     end
 
     def event_links_for(artist_name)
       calendar_data = calendar_for(artist_name)
       # production
-      # JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["uri"]}
+      JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["uri"]}
       # development
-      calendar_data["resultsPage"]["results"]["event"].map {|event| event["uri"]}
+      # calendar_data["resultsPage"]["results"]["event"].map {|event| event["uri"]}
     end
 
     private
@@ -90,9 +90,9 @@ module Songkick
     def access_calendar_data(artist_id)
       search_string = "http://api.songkick.com/api/3.0/artists/#{artist_id}/calendar.json?apikey=#{KEY}"
       # production
-      # HTTParty.get(search_string)
+      HTTParty.get(search_string)
       # development
-      CALENDAR_DATA
+      # CALENDAR_DATA
     end
   end
 
@@ -112,9 +112,9 @@ module Songkick
     def events_for(artist_name)
       calendar_data = Songkick::Calendar.new(artist_name: "Tribal Seeds").calendar
       # production
-      # JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["start"]["date"]}
+      JSON.parse(calendar_data.body)["resultsPage"]["results"]["event"].map {|event| event["start"]["date"]}
       # development
-      calendar_data["resultsPage"]["results"]["event"].map {|event| event}
+      # calendar_data["resultsPage"]["results"]["event"].map {|event| event}
 
     end
 
@@ -143,9 +143,9 @@ module Songkick
 
     def access_artist_id(artists_data)
         # production
-        # JSON.parse(artists_data.body)["resultsPage"]["results"]["artist"].first["id"]
+        JSON.parse(artists_data.body)["resultsPage"]["results"]["artist"].first["id"]
         # development
-        artists_data["resultsPage"]["results"]["artist"].first["id"]
+        # artists_data["resultsPage"]["results"]["artist"].first["id"]
     end
 
     def artist_id_for(artist_name)
@@ -155,9 +155,9 @@ module Songkick
     def artist_displayname_for(artist_name)
       artist_data = access_artist_data(artist_name)
       # production
-      # JSON.parse(artist_data.body)["resultsPage"]["results"]["artist"].first["displayName"]
+      JSON.parse(artist_data.body)["resultsPage"]["results"]["artist"].first["displayName"]
       # development
-      artist_data["resultsPage"]["results"]["artist"].first["displayName"]
+      # artist_data["resultsPage"]["results"]["artist"].first["displayName"]
     end
 
     private
@@ -166,19 +166,23 @@ module Songkick
       artist = URI.escape(artist_name)
       search_string = "http://api.songkick.com/api/3.0/search/artists.json?query=#{artist}&apikey=#{KEY}"
       # production
-      # HTTParty.get(search_string)
+      HTTParty.get(search_string)
       # development
-      ARTIST_DATA
+      # ARTIST_DATA
     end
 
   end
 
 end
 
-# pp Songkick::Calendar.new(artist_name: "Muse").cities
-# Songkick::Artist.new(artist_name: "Tribal Seeds").artist_displayname
-# Songkick::Event.new(artist_name: "Tribal Seeds").date
-# Songkick::Event.new(artist_name: "Tribal Seeds").time
+# event = Songkick::Calendar.new(artist_name: "Matisyahu")
+# p event
+# p event.tour_locations
+# p event.event_titles
+# p event.event_dates
+# p event.event_times
+# p event.event_links
+# p event.cities
 
 
 
