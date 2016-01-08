@@ -16,7 +16,13 @@
       <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
       </li>
       <li>
-      <%= link_to('Profile', user_maps_path(current_user)) %>
+      <%= link_to('Community', users_path()) %>
+      </li>
+      <li>
+      <%= link_to('Profile', profiles_path(current_user)) %>
+      </li>
+      <li>
+      <%= link_to('Maps', new_user_map_path(current_user)) %>
       </li>
     <% end %>
   </nav>

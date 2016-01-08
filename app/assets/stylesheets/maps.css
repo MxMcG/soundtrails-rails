@@ -1,6 +1,9 @@
 #map {
-  height: 300px;
-  width: 400px;
+  height: 60em;
+  width: 100%;
 }
 
+.map-input {
+  text-align: center;
+}
 

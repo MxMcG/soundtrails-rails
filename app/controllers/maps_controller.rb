@@ -2,15 +2,12 @@ class MapsController < ApplicationController
 
   def index
     @user = current_user
-    @maps = @user.maps.order("id DESC")
+
   end
 
   def new
     @map = Map.new()
-    respond_to do |format|
-      format.html {render :"_new_map", layout: false}
-      format.json
-    end
+    @user = current_user
   end
 
   def create
@@ -19,7 +16,18 @@ class MapsController < ApplicationController
     @map.user_id = current_user.id
     respond_to do |format|
       if @map.save
-        format.html { render "show", layout: false, locals: {map: @map, user: @map.user_id} }
+        @event = Songkick::Calendar.new(artist_name: @map.artist)
+        format.json {
+          render :json, {
+            locations: @event.tour_locations,
+            artist: @map.artist,
+            titles: @event.event_titles,
+            dates: @event.event_dates,
+            times: @event.event_times,
+            links: @event.event_links,
+            cities: @event.cities
+          }
+        }
       end
     end
   end
@@ -29,7 +37,7 @@ class MapsController < ApplicationController
     p "&" * 70
     p @map.artist
     p "&" * 70
-    @event = Songkick::Calendar.new(artist_name: @map.artist)
+
     p @map.center_lat
 
     respond_to do |format|

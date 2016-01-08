@@ -1,0 +1,11 @@
+<h1><%= @user.username %></h1>
+<h1>Community</h1>
+<div class="maps-list">
+  <% @maps.each do |map| %>
+    <%= link_to map.artist, user_map_path(map.user, map.id), class: "view-map-link" %>
+    <%= link_to "Delete", user_map_path(map.user, map.id), method: "delete" %>
+    <%= link_to map.user.email, user_path(map.user) %>
+    <br>
+  <% end %>
+
+</div>
